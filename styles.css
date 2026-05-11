@@ -1,0 +1,314 @@
+/* ============================================================
+   Inforcer Partner ROI Calculator — styles
+   ============================================================ */
+
+/* ---- 1. Design tokens (colours, fonts, spacing) ---- */
+:root {
+  --navy: #1F3A5F;
+  --navy-dark: #14253D;
+  --accent: #2E86AB;
+  --result-bg: #E8F4F8;
+  --input-bg: #FFF8DC;
+  --section-bg: #F2F2F2;
+  --page-bg: #FAFAFA;
+  --border: #E0E0E0;
+  --text: #1A1A1A;
+  --text-muted: #5C6470;
+  --positive: #2E7D32;
+  --negative: #C62828;
+
+  --font-body: "Arial", "Helvetica Neue", Helvetica, sans-serif;
+  --radius: 6px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* ---- 2. Reset + base ---- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--page-bg);
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3 {
+  color: var(--navy);
+  margin: 0 0 12px 0;
+}
+
+h1 { font-size: 28px; font-weight: 700; }
+h2 { font-size: 22px; font-weight: 700; margin-top: 8px; }
+h3 { font-size: 16px; font-weight: 700; margin-top: 24px; }
+
+p { margin: 0 0 12px 0; }
+
+/* ---- 3. Page chrome (header, footer) ---- */
+header {
+  background: var(--navy);
+  color: white;
+  padding: 28px 40px;
+}
+
+header h1 { color: white; margin-bottom: 6px; }
+
+.subtitle {
+  color: #C8D4E1;
+  font-style: italic;
+  margin: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-muted);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+/* ---- 4. Main two-column layout ---- */
+main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 28px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+/* On screens narrower than 900px, stack to one column */
+@media (max-width: 900px) {
+  main { grid-template-columns: 1fr; padding: 20px; }
+  header { padding: 20px; }
+}
+
+/* ---- 5. Inputs side ---- */
+.inputs fieldset {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px 20px 20px;
+  margin: 0 0 18px 0;
+  background: white;
+  box-shadow: var(--shadow);
+}
+
+.inputs legend {
+  font-weight: 700;
+  color: var(--navy);
+  padding: 0 8px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.field {
+  display: flex;
+  flex-wrap: wrap;          /* label wraps to its own line */
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.field:last-child { margin-bottom: 0; }
+
+.field label {
+  flex-basis: 100%;          /* label takes the whole row */
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.field input {
+  flex: 1;                   /* input fills the remaining row */
+  min-width: 0;
+  padding: 8px 10px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text);
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(46, 134, 171, 0.18);
+}
+
+.field .suffix {
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 18px;
+}
+
+/* ---- 6. Outputs side ---- */
+.outputs {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  align-self: start;          /* don't stretch to match inputs height */
+}
+
+/* KPI grid: 2x2 on desktop, stacks on narrow screens */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 500px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+}
+
+.kpi {
+  background: var(--result-bg);
+  border: 1px solid #BFDFE9;
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+
+.kpi-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.kpi-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+/* P&L table */
+.pl-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.pl-table th,
+.pl-table td {
+  padding: 8px 10px;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+}
+
+.pl-table th:first-child,
+.pl-table td:first-child {
+  text-align: left;
+}
+
+.pl-table thead th {
+  background: var(--navy);
+  color: white;
+  font-weight: 700;
+  border-bottom: none;
+}
+
+.pl-table tbody tr:hover {
+  background: #FAFCFD;
+}
+
+.pl-table .total-row {
+  font-weight: 700;
+  background: var(--result-bg);
+}
+
+.pl-table .total-row td {
+  border-bottom: none;
+}
+
+/* Delta colour helpers — JavaScript will add these classes */
+.positive { color: var(--positive); font-weight: 600; }
+.negative { color: var(--negative); font-weight: 600; }
+
+/* Benchmark callout */
+.benchmark {
+  background: #FFF9E6;
+  border-left: 4px solid #E0B341;
+  padding: 12px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.cumulative {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.cumulative strong {
+  color: var(--navy);
+  font-size: 17px;
+}
+
+/* PSM talking-points block */
+.psm-notes {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px dashed var(--border);
+}
+
+.toggle {
+  background: white;
+  color: var(--navy);
+  border: 1px solid var(--navy);
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.toggle:hover {
+  background: var(--navy);
+  color: white;
+}
+
+.anchors {
+  margin: 16px 0 0 0;
+  padding: 16px 16px 16px 36px;
+  background: #FFF3F0;
+  border-left: 4px solid #C44536;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.anchors::before {
+  content: "PSM only — internal talking points";
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #C44536;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: -20px;
+  margin-bottom: 10px;
+}
+
+.anchors li {
+  margin-bottom: 8px;
+  line-height: 1.45;
+}
+
+.anchors li:last-child { margin-bottom: 0; }
+
+.hidden { display: none; }

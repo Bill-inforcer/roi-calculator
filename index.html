@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inforcer Partner ROI Calculator</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Inforcer Partner ROI Calculator</h1>
+    <p class="subtitle">
+      Co-edit live in the QBR. Every input is the partner's own number — not a vendor average.
+    </p>
+  </header>
+
+  <main>
+
+    <!-- ============================================ -->
+    <!-- LEFT SIDE: INPUTS                            -->
+    <!-- ============================================ -->
+    <section class="inputs">
+
+      <!-- Group 1: Partner business profile -->
+      <fieldset>
+        <legend>1. Partner business profile</legend>
+
+        <div class="field">
+          <label for="tenants">Number of managed tenants</label>
+          <input type="number" id="tenants" value="60" min="0" />
+        </div>
+
+        <div class="field">
+          <label for="seats">Total managed seats (users)</label>
+          <input type="number" id="seats" value="2500" min="0" />
+        </div>
+
+        <div class="field">
+          <label for="pepm">Average revenue per seat per month — PEPM ($)</label>
+          <input type="number" id="pepm" value="85" min="0" step="0.01" />
+        </div>
+      </fieldset>
+
+      <!-- Group 2: Current P&L -->
+      <fieldset>
+        <legend>2. Current-state P&amp;L</legend>
+
+        <div class="field">
+          <label for="cogsPct">Cost of services (COGS) — % of revenue</label>
+          <input type="number" id="cogsPct" value="35" min="0" max="100" step="0.1" />
+          <span class="suffix">%</span>
+        </div>
+
+        <div class="field">
+          <label for="opexPct">Operating expenses (Opex) — % of revenue</label>
+          <input type="number" id="opexPct" value="50" min="0" max="100" step="0.1" />
+          <span class="suffix">%</span>
+        </div>
+      </fieldset>
+
+      <!-- Group 3: Current M365 security stack -->
+      <fieldset>
+        <legend>3. Current M365 security stack</legend>
+
+        <div class="field">
+          <label for="stackPerSeat">M365 security tools — combined cost per seat / month ($)</label>
+          <input type="number" id="stackPerSeat" value="8" min="0" step="0.01" />
+        </div>
+
+        <div class="field">
+          <label for="hrsMonth">Engineer hours / month on M365 security admin</label>
+          <input type="number" id="hrsMonth" value="80" min="0" />
+        </div>
+
+        <div class="field">
+          <label for="hrRate">Loaded engineer cost / hour ($)</label>
+          <input type="number" id="hrRate" value="90" min="0" step="0.01" />
+        </div>
+      </fieldset>
+
+      <!-- Group 4: Inforcer pricing & uplift -->
+      <fieldset>
+        <legend>4. Inforcer pricing &amp; uplift</legend>
+
+        <div class="field">
+          <label for="inforcerCost">Inforcer cost per seat / month ($)</label>
+          <input type="number" id="inforcerCost" value="2" min="0" step="0.01" />
+        </div>
+
+        <div class="field">
+          <label for="pepmUplift">PEPM uplift the MSP can charge end customers ($)</label>
+          <input type="number" id="pepmUplift" value="4" min="0" step="0.01" />
+        </div>
+
+        <div class="field">
+          <label for="attach">Year-1 attach rate (% of seats)</label>
+          <input type="number" id="attach" value="60" min="0" max="100" step="1" />
+          <span class="suffix">%</span>
+        </div>
+
+        <div class="field">
+          <label for="toolSave">Retired tools — per-seat saving ($)</label>
+          <input type="number" id="toolSave" value="3.5" min="0" step="0.01" />
+        </div>
+
+        <div class="field">
+          <label for="hrsSaved">Engineer hours saved / month via automation</label>
+          <input type="number" id="hrsSaved" value="40" min="0" />
+        </div>
+
+        <div class="field">
+          <label for="churnRed">Churn reduction (Yr 1, percentage points)</label>
+          <input type="number" id="churnRed" value="1" min="0" max="100" step="0.1" />
+          <span class="suffix">pp</span>
+        </div>
+      </fieldset>
+
+      <!-- Group 5: Valuation -->
+      <fieldset>
+        <legend>5. Valuation</legend>
+
+        <div class="field">
+          <label for="multiple">EV / EBITDA multiple</label>
+          <input type="number" id="multiple" value="8" min="0" step="0.1" />
+          <span class="suffix">x</span>
+        </div>
+      </fieldset>
+
+    </section>
+
+    <!-- ============================================ -->
+    <!-- RIGHT SIDE: OUTPUTS                          -->
+    <!-- ============================================ -->
+    <section class="outputs">
+
+      <h2>Results</h2>
+
+      <!-- Headline KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Annual EBITDA uplift</div>
+          <div class="kpi-value" id="out-ebitda-uplift">—</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Equity value created (1-yr)</div>
+          <div class="kpi-value" id="out-equity-value">—</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">EBITDA margin — current</div>
+          <div class="kpi-value" id="out-margin-current">—</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">EBITDA margin — with Inforcer</div>
+          <div class="kpi-value" id="out-margin-new">—</div>
+        </div>
+      </div>
+
+      <!-- P&L breakdown -->
+      <h3>P&amp;L impact (annual)</h3>
+      <table class="pl-table">
+        <thead>
+          <tr>
+            <th>Line item</th>
+            <th>Current</th>
+            <th>With Inforcer</th>
+            <th>Δ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Managed-services revenue</td>
+            <td id="out-rev-c">—</td>
+            <td id="out-rev-n">—</td>
+            <td id="out-rev-d">—</td>
+          </tr>
+          <tr>
+            <td>COGS</td>
+            <td id="out-cogs-c">—</td>
+            <td id="out-cogs-n">—</td>
+            <td id="out-cogs-d">—</td>
+          </tr>
+          <tr>
+            <td>Gross profit</td>
+            <td id="out-gp-c">—</td>
+            <td id="out-gp-n">—</td>
+            <td id="out-gp-d">—</td>
+          </tr>
+          <tr>
+            <td>Opex</td>
+            <td id="out-opex-c">—</td>
+            <td id="out-opex-n">—</td>
+            <td id="out-opex-d">—</td>
+          </tr>
+          <tr class="total-row">
+            <td>EBITDA</td>
+            <td id="out-ebitda-c">—</td>
+            <td id="out-ebitda-n">—</td>
+            <td id="out-ebitda-d">—</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Benchmark -->
+      <h3>Service Leadership benchmark</h3>
+      <p class="benchmark" id="out-benchmark">
+        Fill the form to see how this partner compares to the global MSP average (11.1%) and best-in-class (19%+).
+      </p>
+
+      <!-- 3-yr cumulative -->
+      <p class="cumulative">
+        3-year cumulative equity value created: <strong id="out-equity-3yr">—</strong>
+      </p>
+
+      <!-- PSM talking points (hidden by default — toggle on for internal use) -->
+      <div class="psm-notes">
+        <button
+          id="toggle-anchors"
+          class="toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="anchors-list"
+        >Show PSM talking points</button>
+
+        <ol id="anchors-list" class="anchors hidden">
+          <li id="anchor-1">—</li>
+          <li id="anchor-2">—</li>
+          <li id="anchor-3">—</li>
+          <li id="anchor-4">—</li>
+          <li id="anchor-5">—</li>
+          <li id="anchor-6">—</li>
+        </ol>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer>
+    <p>
+      Pilot v0.1 — Inforcer Partner Success.
+      Benchmarks: Service Leadership Index 2025; TruMethods; IT Nation Evolve.
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
