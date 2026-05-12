@@ -30,6 +30,15 @@
 /* ---- 2. Reset + base ---- */
 * { box-sizing: border-box; }
 
+/* Always reserve space for the vertical scrollbar, even when the page
+   is short enough not to need one. Without this, switching between a
+   long view (Inputs) and a short view (Results) makes the scrollbar
+   appear and disappear — which shifts every centred element on the
+   page by ~7-8px. This forces the scrollbar lane to always be there. */
+html {
+  overflow-y: scroll;
+}
+
 body {
   font-family: var(--font-body);
   font-size: 15px;
