@@ -29,5 +29,5 @@ Vanilla HTML, CSS, and JavaScript. No build step, no dependencies, no tracking.
 
 ---
 
-Pilot v0.1 — Inforcer Partner Success.
+Pilot v0.2 — Inforcer Partner Success. (Reset, Copy summary, Print-to-PDF added.)
 Benchmarks: Service Leadership Index 2025; TruMethods; IT Nation Evolve.

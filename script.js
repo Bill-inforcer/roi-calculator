@@ -203,11 +203,67 @@ function updateAnchors(v) {
   });
 }
 
+// ---- 7. Reset, Copy, Print helpers ----------------------------
+
+// Reset wipes every input box to empty. An empty box reads as 0 in our
+// model, so every output drops to $0 / dashes — a clean slate the partner
+// can fill in from scratch.
+// (If you'd rather reset to the demo defaults, replace `input.value = ''`
+//  with `input.value = input.defaultValue;` — defaultValue is the value
+//  the HTML originally shipped with.)
+function resetInputs() {
+  document.querySelectorAll('input').forEach((input) => {
+    input.value = '';
+  });
+  recalculate();
+}
+
+// Copy builds a plain-text summary from what's already on the page and
+// puts it on the clipboard. Uses the modern async Clipboard API.
+async function copySummary() {
+  const get = (id) => document.getElementById(id).textContent;
+
+  const lines = [
+    'Inforcer Partner ROI — Snapshot',
+    '────────────────────────────────',
+    `Annual EBITDA uplift:   ${get('out-ebitda-uplift')}`,
+    `Equity value (1-yr):    ${get('out-equity-value')}`,
+    `EBITDA margin:          ${get('out-margin-current')} → ${get('out-margin-new')}`,
+    `3-yr cumulative value:  ${get('out-equity-3yr')}`,
+    '',
+    get('out-benchmark'),
+  ];
+  const text = lines.join('\n');
+
+  const btn = document.getElementById('copy-summary');
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.textContent = 'Copied to clipboard';
+    btn.classList.add('copied');
+  } catch (err) {
+    btn.textContent = 'Copy failed — try again';
+  }
+  // After 2 seconds, restore the button to its resting state.
+  setTimeout(() => {
+    btn.textContent = 'Copy summary';
+    btn.classList.remove('copied');
+  }, 2000);
+}
+
+// Format today's date as e.g. "12 May 2026" for the print-only header.
+function setPrintDate() {
+  const today = new Date();
+  const opts = { day: 'numeric', month: 'long', year: 'numeric' };
+  document.getElementById('print-date').textContent =
+    today.toLocaleDateString('en-AU', opts);
+}
+
 // ---- 4. Wire it up ---------------------------------------------
 
 // Run once when the page is ready, then re-run on every keystroke.
 document.addEventListener('DOMContentLoaded', () => {
   recalculate();
+  setPrintDate();
 
   // Re-run the model on every keystroke in any input box.
   document.querySelectorAll('input').forEach((input) => {
@@ -224,4 +280,8 @@ document.addEventListener('DOMContentLoaded', () => {
       : 'Hide PSM talking points';
     toggleBtn.setAttribute('aria-expanded', String(!isHidden));
   });
+
+  // Reset and Copy buttons.
+  document.getElementById('reset-inputs').addEventListener('click', resetInputs);
+  document.getElementById('copy-summary').addEventListener('click', copySummary);
 });

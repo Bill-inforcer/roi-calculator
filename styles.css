@@ -312,3 +312,119 @@ main {
 .anchors li:last-child { margin-bottom: 0; }
 
 .hidden { display: none; }
+
+/* ---- 8. Toolbar + secondary/primary buttons ---- */
+.toolbar {
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-secondary,
+.btn-primary {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-secondary {
+  background: white;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--section-bg);
+  color: var(--text);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  border: 1px solid var(--accent);
+}
+
+.btn-primary:hover {
+  background: #246B8C;
+  border-color: #246B8C;
+}
+
+/* Two-second visual confirmation after Copy clicked */
+.btn-primary.copied {
+  background: var(--positive);
+  border-color: var(--positive);
+}
+
+.outputs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.outputs-header h2 { margin: 0; }
+
+/* ---- 9. Print stylesheet ---- */
+/* Default: hide print-only block on screen */
+.print-only { display: none; }
+.print-header h1 { color: var(--navy); margin-bottom: 4px; }
+.print-header p { color: var(--text-muted); font-size: 13px; }
+
+@media print {
+  /* Strip away anything that isn't the partner-facing leave-behind */
+  header,
+  footer,
+  .inputs,
+  .toolbar,
+  .outputs-header button,
+  .psm-notes {
+    display: none !important;
+  }
+
+  /* Reveal the print-only header instead */
+  .print-only { display: block; }
+  .print-header {
+    padding: 0 0 12px 0;
+    border-bottom: 2px solid var(--navy);
+    margin-bottom: 16px;
+  }
+
+  /* Stretch outputs to fill the page */
+  body { background: white; font-size: 11pt; }
+  main {
+    display: block;
+    max-width: 100%;
+    padding: 16px 24px;
+  }
+  .outputs {
+    box-shadow: none;
+    border: none;
+    padding: 0;
+  }
+
+  /* Keep KPIs and tables from splitting across pages */
+  .kpi-grid,
+  .pl-table,
+  .benchmark {
+    page-break-inside: avoid;
+  }
+
+  /* Lighten heavy backgrounds — saves toner, prints cleaner */
+  .pl-table thead th {
+    background: white;
+    color: var(--navy);
+    border-bottom: 2px solid var(--navy);
+  }
+  .pl-table .total-row {
+    background: var(--section-bg);
+  }
+  .kpi {
+    background: var(--section-bg);
+    border-color: var(--border);
+  }
+}

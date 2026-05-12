@@ -15,12 +15,25 @@
     </p>
   </header>
 
+  <!-- Print-only header. Hidden on screen, shows on Cmd/Ctrl+P -->
+  <div class="print-only print-header">
+    <h1>Inforcer Partner ROI — Summary</h1>
+    <p>Prepared <span id="print-date"></span> · All figures derived from partner-supplied inputs.</p>
+  </div>
+
   <main>
 
     <!-- ============================================ -->
     <!-- LEFT SIDE: INPUTS                            -->
     <!-- ============================================ -->
     <section class="inputs">
+
+      <!-- Toolbar: Reset button sits above the input groups -->
+      <div class="toolbar">
+        <button id="reset-inputs" type="button" class="btn-secondary">
+          Reset all inputs
+        </button>
+      </div>
 
       <!-- Group 1: Partner business profile -->
       <fieldset>
@@ -134,7 +147,13 @@
     <!-- ============================================ -->
     <section class="outputs">
 
-      <h2>Results</h2>
+      <!-- Toolbar: Results heading + Copy summary button on one row -->
+      <div class="outputs-header">
+        <h2>Results</h2>
+        <button id="copy-summary" type="button" class="btn-primary">
+          Copy summary
+        </button>
+      </div>
 
       <!-- Headline KPIs -->
       <div class="kpi-grid">
