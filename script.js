@@ -1,23 +1,20 @@
 // ============================================================
-// Inforcer Partner ROI Calculator — live calculations
+// Inforcer Partner ROI Calculator — live calculations  (v0.3)
 // ============================================================
 
 // ---- 1. Helpers: number formatters ----------------------------
 
-// Format a number as currency, e.g. 209700 → "$209,700"
 const fmtCurrency = new Intl.NumberFormat('en-AU', {
   style: 'currency',
   currency: 'AUD',
   maximumFractionDigits: 0,
 });
 
-// Format a fraction as a percent, e.g. 0.225 → "22.5%"
 function fmtPercent(value) {
   if (!isFinite(value)) return '—';
   return (value * 100).toFixed(1) + '%';
 }
 
-// Format a delta with a leading "+" for positives, e.g. 209700 → "+$209,700"
 function fmtDelta(value) {
   const sign = value > 0 ? '+' : '';
   return sign + fmtCurrency.format(value);
@@ -25,13 +22,11 @@ function fmtDelta(value) {
 
 // ---- 2. Read / write helpers ----------------------------------
 
-// Read a numeric input by id. Returns 0 if the box is empty or invalid.
 function readNum(id) {
   const v = parseFloat(document.getElementById(id).value);
   return isFinite(v) ? v : 0;
 }
 
-// Write text into an output element by id, optionally tagging it positive/negative.
 function write(id, text, tone) {
   const el = document.getElementById(id);
   el.textContent = text;
@@ -40,8 +35,8 @@ function write(id, text, tone) {
 }
 
 // ---- Benchmark constants (Service Leadership Index) ----------
-const BENCH_AVG = 0.111;   // Global MSP average — Q4 2024
-const BENCH_BIC = 0.19;    // Best-in-class — 5-yr running
+const BENCH_AVG = 0.111;
+const BENCH_BIC = 0.19;
 
 // ---- 3. The big one: run the whole model ----------------------
 
@@ -71,13 +66,13 @@ function recalculate() {
 
   // --- 3c. The four uplift drivers ---
   const upliftSeats   = seats * attach;
-  const newRevenue    = upliftSeats * pepmUplift * 12;   // Driver 1 — revenue
-  const inforcerCogs  = upliftSeats * inforcerCost * 12; // Driver 1 — new cost
-  const stackSaving   = toolSave * seats * 12;           // Driver 2 — tools retired
-  const timeSaving    = hrsSaved * hrRate * 12;          // Driver 3 — engineer hours freed
-  const retainedRev   = churnRed * revenue;              // Driver 4 — churn reduction
+  const newRevenue    = upliftSeats * pepmUplift * 12;
+  const inforcerCogs  = upliftSeats * inforcerCost * 12;
+  const stackSaving   = toolSave * seats * 12;
+  const timeSaving    = hrsSaved * hrRate * 12;
+  const retainedRev   = churnRed * revenue;
 
-  // --- 3d. With-Inforcer P&L (Opex held flat on purpose) ---
+  // --- 3d. With-Inforcer P&L ---
   const revenueNew    = revenue + newRevenue + retainedRev;
   const cogsNew       = cogsCurrent + inforcerCogs - stackSaving - timeSaving;
   const gpNew         = revenueNew - cogsNew;
@@ -89,48 +84,39 @@ function recalculate() {
   const equityValue   = ebitdaUplift * multiple;
   const equity3yr     = ebitdaUplift * 3 * multiple;
 
-  // --- 3f. Write KPI tiles ---
+  // --- 3f. KPI tiles ---
   write('out-ebitda-uplift',  fmtCurrency.format(ebitdaUplift));
   write('out-equity-value',   fmtCurrency.format(equityValue));
   write('out-margin-current', fmtPercent(marginCurrent));
   write('out-margin-new',     fmtPercent(marginNew));
 
-  // --- 3g. Write P&L table ---
-  // Revenue row
+  // --- 3g. P&L table ---
   const revDelta = revenueNew - revenue;
   write('out-rev-c', fmtCurrency.format(revenue));
   write('out-rev-n', fmtCurrency.format(revenueNew));
   write('out-rev-d', fmtDelta(revDelta), revDelta >= 0 ? 'positive' : 'negative');
 
-  // COGS row — lower is better, so the colour flips
   const cogsDelta = cogsNew - cogsCurrent;
   write('out-cogs-c', fmtCurrency.format(cogsCurrent));
   write('out-cogs-n', fmtCurrency.format(cogsNew));
   write('out-cogs-d', fmtDelta(cogsDelta), cogsDelta <= 0 ? 'positive' : 'negative');
 
-  // Gross profit row
   const gpDelta = gpNew - gpCurrent;
   write('out-gp-c', fmtCurrency.format(gpCurrent));
   write('out-gp-n', fmtCurrency.format(gpNew));
   write('out-gp-d', fmtDelta(gpDelta), gpDelta >= 0 ? 'positive' : 'negative');
 
-  // Opex row (held flat)
   write('out-opex-c', fmtCurrency.format(opex));
   write('out-opex-n', fmtCurrency.format(opex));
   write('out-opex-d', fmtDelta(0));
 
-  // EBITDA row
   write('out-ebitda-c', fmtCurrency.format(ebitdaCurrent));
   write('out-ebitda-n', fmtCurrency.format(ebitdaNew));
   write('out-ebitda-d', fmtDelta(ebitdaUplift), ebitdaUplift >= 0 ? 'positive' : 'negative');
 
-  // --- 3h. 3-year cumulative equity value ---
   write('out-equity-3yr', fmtCurrency.format(equity3yr));
 
-  // --- 3i. Dynamic benchmark sentence ---
   updateBenchmark(marginCurrent, marginNew);
-
-  // --- 3j. Dynamic PSM talking points ---
   updateAnchors({
     marginCurrent, marginNew, ebitdaUplift, equityValue, equity3yr, multiple,
     driver1: newRevenue - inforcerCogs,
@@ -184,17 +170,12 @@ function updateAnchors(v) {
 
   const anchors = [
     `Global MSP average EBITDA is ${pct(BENCH_AVG)}; best-in-class run ${pct(BENCH_BIC)}+ for five years straight (Service Leadership Index). 18% of MSPs are losing money.`,
-
     gapToAvg >= 0
       ? `On your numbers, you sit at ${pct(v.marginCurrent)} — that's ${pp(gapToAvg)} above the global average. Top-quartile territory.`
       : `On your numbers, you sit at ${pct(v.marginCurrent)} — that's ${pp(-gapToAvg)} below the global average. Plenty of margin to recover.`,
-
     `Inforcer lifts your projected EBITDA margin to ${pct(v.marginNew)} — a ${pp(lift)} improvement in Year 1.`,
-
     `At your ${v.multiple.toFixed(1)}x EV/EBITDA multiple, that's ${$(v.equityValue)} in equity value created in Year 1.`,
-
     `Four levers behind that number — PEPM uplift (${$(v.driver1)}), stack rationalisation (${$(v.driver2)}), engineer time freed (${$(v.driver3)}), churn reduction (${$(v.driver4)}). Push back on any of them.`,
-
     `Over a typical 3-year hold (flat assumption), cumulative equity value created: ${$(v.equity3yr)}.`,
   ];
 
@@ -205,12 +186,6 @@ function updateAnchors(v) {
 
 // ---- 7. Reset, Copy, Print helpers ----------------------------
 
-// Reset wipes every input box to empty. An empty box reads as 0 in our
-// model, so every output drops to $0 / dashes — a clean slate the partner
-// can fill in from scratch.
-// (If you'd rather reset to the demo defaults, replace `input.value = ''`
-//  with `input.value = input.defaultValue;` — defaultValue is the value
-//  the HTML originally shipped with.)
 function resetInputs() {
   document.querySelectorAll('input').forEach((input) => {
     input.value = '';
@@ -218,8 +193,6 @@ function resetInputs() {
   recalculate();
 }
 
-// Copy builds a plain-text summary from what's already on the page and
-// puts it on the clipboard. Uses the modern async Clipboard API.
 async function copySummary() {
   const get = (id) => document.getElementById(id).textContent;
 
@@ -243,14 +216,12 @@ async function copySummary() {
   } catch (err) {
     btn.textContent = 'Copy failed — try again';
   }
-  // After 2 seconds, restore the button to its resting state.
   setTimeout(() => {
     btn.textContent = 'Copy summary';
     btn.classList.remove('copied');
   }, 2000);
 }
 
-// Format today's date as e.g. "12 May 2026" for the print-only header.
 function setPrintDate() {
   const today = new Date();
   const opts = { day: 'numeric', month: 'long', year: 'numeric' };
@@ -258,9 +229,110 @@ function setPrintDate() {
     today.toLocaleDateString('en-AU', opts);
 }
 
-// ---- 4. Wire it up ---------------------------------------------
+// ---- 8. Tab switching -----------------------------------------
+// Two buttons, two panels. The function below sets ONE panel
+// active and hides the other. It also flips aria-selected and
+// the .active visual class on the tab buttons — accessibility
+// tools (screen readers, keyboard navigation) need both.
+function showPanel(which) {
+  const tabs   = { inputs: 'tab-inputs',   results: 'tab-results'   };
+  const panels = { inputs: 'panel-inputs', panel:   'panel-results' };
 
-// Run once when the page is ready, then re-run on every keystroke.
+  const tabInputs   = document.getElementById('tab-inputs');
+  const tabResults  = document.getElementById('tab-results');
+  const panelInputs = document.getElementById('panel-inputs');
+  const panelResults= document.getElementById('panel-results');
+
+  const isResults = which === 'results';
+
+  tabInputs.classList.toggle('active', !isResults);
+  tabResults.classList.toggle('active', isResults);
+  tabInputs.setAttribute('aria-selected', String(!isResults));
+  tabResults.setAttribute('aria-selected', String(isResults));
+
+  panelInputs.classList.toggle('hidden', isResults);
+  panelResults.classList.toggle('hidden', !isResults);
+
+  // Scroll to the top of the page when switching — so the user
+  // never lands halfway down the form they just left.
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ---- 9. Export inputs as CSV ----------------------------------
+// CSV (Comma-Separated Values) is the simplest spreadsheet format.
+// Every input on the page has a {id, label, value} we want to save.
+// We build a list of those, join with commas + newlines, then ask
+// the browser to download it.
+//
+// The download trick: create an invisible <a> tag whose href is a
+// Blob URL (an in-memory file), give it a `download` attribute,
+// and click() it programmatically. The browser treats it like the
+// user clicked a download link.
+function exportInputsCSV() {
+  const rows = [['Field', 'Value']];
+
+  // For each input on the page, find its label text and grab its value.
+  document.querySelectorAll('.inputs input').forEach((input) => {
+    const label = document.querySelector(`label[for="${input.id}"]`);
+    const labelText = label ? label.textContent.trim() : input.id;
+    rows.push([labelText, input.value]);
+  });
+
+  // CSV escape: wrap any field that contains a comma or quote in
+  // double quotes, and double up any internal quotes.
+  const csv = rows.map((row) =>
+    row.map((cell) => {
+      const s = String(cell);
+      if (s.includes(',') || s.includes('"') || s.includes('\n')) {
+        return '"' + s.replace(/"/g, '""') + '"';
+      }
+      return s;
+    }).join(',')
+  ).join('\n');
+
+  // Build a filename like "inforcer-roi-inputs-2026-05-12.csv"
+  const today = new Date().toISOString().slice(0, 10);
+  const filename = `inforcer-roi-inputs-${today}.csv`;
+
+  // Wrap the string in a Blob, create a temporary URL, attach to a
+  // hidden <a>, click it, then clean up.
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  // Brief visual confirmation on the button.
+  const btn = document.getElementById('export-inputs');
+  btn.textContent = 'Downloaded';
+  btn.classList.add('copied');
+  setTimeout(() => {
+    btn.textContent = 'Export inputs (CSV)';
+    btn.classList.remove('copied');
+  }, 2000);
+}
+
+// ---- 10. Download as PDF --------------------------------------
+// We don't generate a PDF ourselves — we let the browser do it.
+// window.print() opens the OS print dialog where the user picks
+// "Save as PDF" as the destination. Our @media print stylesheet
+// makes sure the layout looks tidy on paper.
+function downloadPDF() {
+  // Make sure the Results panel is visible before printing. If the
+  // user has the Inputs tab active, the print stylesheet has a
+  // safety net (#panel-results.hidden { display: block !important }),
+  // but switching explicitly is cleaner.
+  showPanel('results');
+  // Give the browser a tick to repaint, then open the dialog.
+  setTimeout(() => window.print(), 100);
+}
+
+// ---- 11. Wire it up -------------------------------------------
+
 document.addEventListener('DOMContentLoaded', () => {
   recalculate();
   setPrintDate();
@@ -270,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
     input.addEventListener('input', recalculate);
   });
 
-  // Show/hide the PSM talking points panel.
+  // PSM talking points show/hide.
   const toggleBtn = document.getElementById('toggle-anchors');
   const anchorsList = document.getElementById('anchors-list');
   toggleBtn.addEventListener('click', () => {
@@ -281,7 +353,15 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleBtn.setAttribute('aria-expanded', String(!isHidden));
   });
 
-  // Reset and Copy buttons.
+  // Reset, Copy, Export, Download.
   document.getElementById('reset-inputs').addEventListener('click', resetInputs);
   document.getElementById('copy-summary').addEventListener('click', copySummary);
+  document.getElementById('export-inputs').addEventListener('click', exportInputsCSV);
+  document.getElementById('download-pdf').addEventListener('click', downloadPDF);
+
+  // Tab strip + the two "jump" buttons.
+  document.getElementById('tab-inputs').addEventListener('click', () => showPanel('inputs'));
+  document.getElementById('tab-results').addEventListener('click', () => showPanel('results'));
+  document.getElementById('go-results').addEventListener('click', () => showPanel('results'));
+  document.getElementById('back-inputs').addEventListener('click', () => showPanel('inputs'));
 });

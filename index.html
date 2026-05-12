@@ -8,11 +8,23 @@
 </head>
 <body>
 
+  <!-- ============================================ -->
+  <!-- HEADER / BRAND BANNER                        -->
+  <!-- ============================================ -->
+  <!-- The .brand block holds the Inforcer logo (white wordmark + blue
+       tick). To swap for a different version, replace the src below. -->
   <header>
-    <h1>Inforcer Partner ROI Calculator</h1>
-    <p class="subtitle">
-      Co-edit live in the QBR. Every input is the partner's own number — not a vendor average.
-    </p>
+    <div class="header-inner">
+      <div class="brand">
+        <img src="inforcer-logo.png" alt="Inforcer" />
+      </div>
+      <div class="brand-text">
+        <h1>Partner ROI Calculator</h1>
+        <p class="subtitle">
+          Your ongoing ROI in your own numbers — not a vendor average.
+        </p>
+      </div>
+    </div>
   </header>
 
   <!-- Print-only header. Hidden on screen, shows on Cmd/Ctrl+P -->
@@ -21,17 +33,55 @@
     <p>Prepared <span id="print-date"></span> · All figures derived from partner-supplied inputs.</p>
   </div>
 
+  <!-- ============================================ -->
+  <!-- TAB STRIP                                    -->
+  <!-- ============================================ -->
+  <!-- A tablist is just a row of buttons. Each button controls
+       one panel via aria-controls. JavaScript toggles a .hidden
+       class on the panels and an .active class on the buttons. -->
+  <nav class="tabstrip" role="tablist" aria-label="Calculator views">
+    <button
+      id="tab-inputs"
+      class="tab active"
+      role="tab"
+      aria-selected="true"
+      aria-controls="panel-inputs"
+      type="button"
+    >✏️ Inputs</button>
+    <button
+      id="tab-results"
+      class="tab"
+      role="tab"
+      aria-selected="false"
+      aria-controls="panel-results"
+      type="button"
+    >📊 Results</button>
+  </nav>
+
   <main>
 
     <!-- ============================================ -->
-    <!-- LEFT SIDE: INPUTS                            -->
+    <!-- PANEL 1: INPUTS                              -->
     <!-- ============================================ -->
-    <section class="inputs">
+    <section
+      class="inputs panel"
+      id="panel-inputs"
+      role="tabpanel"
+      aria-labelledby="tab-inputs"
+    >
 
-      <!-- Toolbar: Reset button sits above the input groups -->
-      <div class="toolbar">
+      <!-- Toolbar: Reset on the left, Export CSV in the middle,
+           a primary "View results →" button on the right that
+           jumps the user to the results tab. -->
+      <div class="toolbar toolbar-inputs">
         <button id="reset-inputs" type="button" class="btn-secondary">
           Reset all inputs
+        </button>
+        <button id="export-inputs" type="button" class="btn-secondary">
+          Export inputs (CSV)
+        </button>
+        <button id="go-results" type="button" class="btn-primary">
+          View results →
         </button>
       </div>
 
@@ -143,34 +193,47 @@
     </section>
 
     <!-- ============================================ -->
-    <!-- RIGHT SIDE: OUTPUTS                          -->
+    <!-- PANEL 2: RESULTS                             -->
     <!-- ============================================ -->
-    <section class="outputs">
+    <section
+      class="outputs panel hidden"
+      id="panel-results"
+      role="tabpanel"
+      aria-labelledby="tab-results"
+    >
 
-      <!-- Toolbar: Results heading + Copy summary button on one row -->
+      <!-- Results toolbar -->
       <div class="outputs-header">
         <h2>Results</h2>
-        <button id="copy-summary" type="button" class="btn-primary">
-          Copy summary
-        </button>
+        <div class="results-actions">
+          <button id="back-inputs" type="button" class="btn-secondary">
+            ← Edit inputs
+          </button>
+          <button id="copy-summary" type="button" class="btn-secondary">
+            Copy summary
+          </button>
+          <button id="download-pdf" type="button" class="btn-primary">
+            Download as PDF
+          </button>
+        </div>
       </div>
 
       <!-- Headline KPIs -->
       <div class="kpi-grid">
         <div class="kpi">
-          <div class="kpi-label">Annual EBITDA uplift</div>
+          <div class="kpi-label">📈 Annual EBITDA uplift</div>
           <div class="kpi-value" id="out-ebitda-uplift">—</div>
         </div>
         <div class="kpi">
-          <div class="kpi-label">Equity value created (1-yr)</div>
+          <div class="kpi-label">💎 Equity value created (1-yr)</div>
           <div class="kpi-value" id="out-equity-value">—</div>
         </div>
         <div class="kpi">
-          <div class="kpi-label">EBITDA margin — current</div>
+          <div class="kpi-label">📍 EBITDA margin — current</div>
           <div class="kpi-value" id="out-margin-current">—</div>
         </div>
         <div class="kpi">
-          <div class="kpi-label">EBITDA margin — with Inforcer</div>
+          <div class="kpi-label">🚀 EBITDA margin — with Inforcer</div>
           <div class="kpi-value" id="out-margin-new">—</div>
         </div>
       </div>
@@ -228,7 +291,8 @@
 
       <!-- 3-yr cumulative -->
       <p class="cumulative">
-        3-year cumulative equity value created: <strong id="out-equity-3yr">—</strong>
+        💰 3-year cumulative equity value created
+        <strong id="out-equity-3yr">—</strong>
       </p>
 
       <!-- PSM talking points (hidden by default — toggle on for internal use) -->
@@ -257,8 +321,11 @@
 
   <footer>
     <p>
-      Pilot v0.1 — Inforcer Partner Success.
+      Pilot v0.3 — Inforcer Partner Success.
       Benchmarks: Service Leadership Index 2025; TruMethods; IT Nation Evolve.
+    </p>
+    <p class="signoff">
+      🐍 Proudly produced by the vibe-coding tenacity of Bill 🐍
     </p>
   </footer>
 

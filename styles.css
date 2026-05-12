@@ -1,11 +1,16 @@
 /* ============================================================
-   Inforcer Partner ROI Calculator — styles
+   Inforcer Partner ROI Calculator — styles  (v0.3)
    ============================================================ */
 
-/* ---- 1. Design tokens (colours, fonts, spacing) ---- */
+/* ---- 1. Design tokens (colours, fonts, spacing) ----
+   Two Inforcer brand colours. --inforcer-blue is the deep navy used
+   for the header (lets the white-and-blue logo pop), and the lighter
+   --inforcer-blue-light is the official brand blue lifted directly
+   from the logo PNG — used for the tab underline, primary buttons,
+   KPI numbers, and accents. Re-skin the whole site from these two. */
 :root {
-  --navy: #1F3A5F;
-  --navy-dark: #14253D;
+  --inforcer-blue: #0A1F3D;       /* deep navy — header background */
+  --inforcer-blue-light: #178BDB; /* official Inforcer brand blue (from logo) */
   --accent: #2E86AB;
   --result-bg: #E8F4F8;
   --input-bg: #FFF8DC;
@@ -23,9 +28,7 @@
 }
 
 /* ---- 2. Reset + base ---- */
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   font-family: var(--font-body);
@@ -38,7 +41,7 @@ body {
 }
 
 h1, h2, h3 {
-  color: var(--navy);
+  color: var(--inforcer-blue);
   margin: 0 0 12px 0;
 }
 
@@ -48,19 +51,48 @@ h3 { font-size: 16px; font-weight: 700; margin-top: 24px; }
 
 p { margin: 0 0 12px 0; }
 
-/* ---- 3. Page chrome (header, footer) ---- */
+/* ---- 3. Page chrome (header, footer) ----
+   The header is a flex row: logo on the left, title block on the right.
+   On narrow screens it stacks. */
 header {
-  background: var(--navy);
+  background: var(--inforcer-blue);
   color: white;
-  padding: 28px 40px;
+  padding: 24px 40px;
 }
 
-header h1 { color: white; margin-bottom: 6px; }
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+/* The brand block holds the Inforcer logo (white wordmark + blue tick).
+   The image sits at 48px tall on desktop, 36px on mobile. */
+.brand {
+  display: flex;
+  align-items: center;
+}
+
+.brand img {
+  height: 48px;
+  width: auto;
+  display: block;
+}
+
+.brand-text h1 {
+  color: white;
+  margin: 0 0 4px 0;
+  font-size: 24px;
+}
 
 .subtitle {
   color: #C8D4E1;
   font-style: italic;
   margin: 0;
+  font-size: 15px;
 }
 
 footer {
@@ -72,25 +104,80 @@ footer {
   margin-top: 40px;
 }
 
-/* ---- 4. Main two-column layout ---- */
+footer .signoff {
+  margin-top: 4px;
+  font-size: 11px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-muted);
+  opacity: 0.75;
+}
+
+/* ---- 4. Tab strip ----
+   Two brand-blue tile buttons, centred under the header. Inactive
+   tab gets a thin brand-blue outline (a "ghost" tile); active tab
+   is filled solid so you can tell them apart at a glance. */
+.tabstrip {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 18px 40px 0 40px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  background: var(--page-bg);
+}
+
+.tab {
+  background: white;
+  border: 2px solid var(--inforcer-blue-light);
+  color: var(--inforcer-blue-light);
+  padding: 14px 36px;
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: var(--radius);
+  min-width: 180px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.tab:hover {
+  background: rgba(23, 139, 219, 0.08);
+}
+
+.tab.active {
+  background: var(--inforcer-blue-light);
+  color: white;
+}
+
+.tab.active:hover {
+  background: var(--inforcer-blue-light);
+  color: white;
+}
+
+/* ---- 5. Main layout ----
+   No more two-column grid — each panel takes the full width. */
 main {
   max-width: 1280px;
   margin: 0 auto;
   padding: 28px 40px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
 }
 
-/* On screens narrower than 900px, stack to one column */
-@media (max-width: 900px) {
-  main { grid-template-columns: 1fr; padding: 20px; }
+.panel { display: block; }
+.panel.hidden { display: none; }
+
+@media (max-width: 700px) {
+  main { padding: 20px; }
   header { padding: 20px; }
+  .tabstrip { padding: 0 20px; }
+  .header-inner { gap: 16px; }
+  .brand img { height: 36px; }
+  .brand-text h1 { font-size: 20px; }
 }
 
-/* ---- 5. Inputs side ---- */
+/* ---- 6. Inputs panel ---- */
 .inputs fieldset {
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--inforcer-blue-light);
   border-radius: var(--radius);
   padding: 16px 20px 20px 20px;
   margin: 0 0 18px 0;
@@ -100,7 +187,7 @@ main {
 
 .inputs legend {
   font-weight: 700;
-  color: var(--navy);
+  color: var(--inforcer-blue);
   padding: 0 8px;
   font-size: 14px;
   text-transform: uppercase;
@@ -109,7 +196,7 @@ main {
 
 .field {
   display: flex;
-  flex-wrap: wrap;          /* label wraps to its own line */
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
   margin-bottom: 12px;
@@ -118,28 +205,28 @@ main {
 .field:last-child { margin-bottom: 0; }
 
 .field label {
-  flex-basis: 100%;          /* label takes the whole row */
+  flex-basis: 100%;
   font-size: 13px;
   color: var(--text-muted);
   font-weight: 600;
 }
 
 .field input {
-  flex: 1;                   /* input fills the remaining row */
+  flex: 1;
   min-width: 0;
   padding: 8px 10px;
   font-family: var(--font-body);
   font-size: 15px;
   color: var(--text);
-  background: var(--input-bg);
-  border: 1px solid var(--border);
+  background: white;
+  border: 1px solid rgba(23, 139, 219, 0.18);
   border-radius: var(--radius);
 }
 
 .field input:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(46, 134, 171, 0.18);
+  border-color: var(--inforcer-blue);
+  box-shadow: 0 0 0 3px rgba(23, 139, 219, 0.20);
 }
 
 .field .suffix {
@@ -148,14 +235,13 @@ main {
   min-width: 18px;
 }
 
-/* ---- 6. Outputs side ---- */
+/* ---- 7. Outputs panel ---- */
 .outputs {
   background: white;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--inforcer-blue-light);
   border-radius: var(--radius);
   padding: 24px;
   box-shadow: var(--shadow);
-  align-self: start;          /* don't stretch to match inputs height */
 }
 
 /* KPI grid: 2x2 on desktop, stacks on narrow screens */
@@ -172,7 +258,7 @@ main {
 
 .kpi {
   background: var(--result-bg);
-  border: 1px solid #BFDFE9;
+  border: 1.5px solid var(--inforcer-blue-light);
   border-radius: var(--radius);
   padding: 14px 16px;
 }
@@ -189,7 +275,7 @@ main {
 .kpi-value {
   font-size: 24px;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--inforcer-blue-light);
 }
 
 /* P&L table */
@@ -208,31 +294,39 @@ main {
 }
 
 .pl-table th:first-child,
-.pl-table td:first-child {
-  text-align: left;
+.pl-table td:first-child { text-align: left; }
+
+/* Line-item column — the labels down the left edge. */
+.pl-table tbody td:first-child {
+  color: var(--inforcer-blue-light);
+  font-weight: 600;
+}
+
+/* Calculated output cells — Current and With-Inforcer columns. The
+   Δ column is left alone so the .positive / .negative semantic
+   colours can still apply there. */
+.pl-table tbody td:nth-child(2),
+.pl-table tbody td:nth-child(3) {
+  color: var(--inforcer-blue-light);
+  font-weight: 600;
 }
 
 .pl-table thead th {
-  background: var(--navy);
+  background: var(--inforcer-blue-light);
   color: white;
   font-weight: 700;
   border-bottom: none;
 }
 
-.pl-table tbody tr:hover {
-  background: #FAFCFD;
-}
+.pl-table tbody tr:hover { background: #FAFCFD; }
 
 .pl-table .total-row {
   font-weight: 700;
   background: var(--result-bg);
 }
 
-.pl-table .total-row td {
-  border-bottom: none;
-}
+.pl-table .total-row td { border-bottom: none; }
 
-/* Delta colour helpers — JavaScript will add these classes */
 .positive { color: var(--positive); font-weight: 600; }
 .negative { color: var(--negative); font-weight: 600; }
 
@@ -247,15 +341,25 @@ main {
 }
 
 .cumulative {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
+  margin-top: 20px;
+  padding: 18px 20px;
+  background: var(--result-bg);
+  border: 1.5px solid var(--inforcer-blue-light);
+  border-radius: var(--radius);
+  text-align: center;
   color: var(--text-muted);
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .cumulative strong {
-  color: var(--navy);
-  font-size: 17px;
+  display: block;
+  margin-top: 6px;
+  color: var(--inforcer-blue-light);
+  font-size: 28px;
+  letter-spacing: 0;
 }
 
 /* PSM talking-points block */
@@ -266,20 +370,21 @@ main {
 }
 
 .toggle {
-  background: white;
-  color: var(--navy);
-  border: 1px solid var(--navy);
+  background: var(--inforcer-blue-light);
+  color: white;
+  border: 1px solid var(--inforcer-blue-light);
   padding: 8px 14px;
   border-radius: var(--radius);
   font-family: var(--font-body);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .toggle:hover {
-  background: var(--navy);
+  background: var(--inforcer-blue);
+  border-color: var(--inforcer-blue);
   color: white;
 }
 
@@ -313,12 +418,16 @@ main {
 
 .hidden { display: none; }
 
-/* ---- 8. Toolbar + secondary/primary buttons ---- */
+/* ---- 8. Toolbars + buttons ---- */
 .toolbar {
-  margin-bottom: 14px;
+  margin-bottom: 18px;
   display: flex;
-  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
 }
+
+.toolbar-inputs { justify-content: flex-start; }
+.toolbar-inputs #go-results { margin-left: auto; }
 
 .btn-secondary,
 .btn-primary {
@@ -343,86 +452,85 @@ main {
 }
 
 .btn-primary {
-  background: var(--accent);
+  background: var(--inforcer-blue-light);
   color: white;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--inforcer-blue-light);
 }
 
 .btn-primary:hover {
-  background: #246B8C;
-  border-color: #246B8C;
+  background: var(--inforcer-blue);
+  border-color: var(--inforcer-blue);
 }
 
-/* Two-second visual confirmation after Copy clicked */
+.btn-secondary.copied,
 .btn-primary.copied {
   background: var(--positive);
   border-color: var(--positive);
+  color: white;
 }
 
 .outputs-header {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   gap: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
 }
 
 .outputs-header h2 { margin: 0; }
 
+.results-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 /* ---- 9. Print stylesheet ---- */
-/* Default: hide print-only block on screen */
 .print-only { display: none; }
-.print-header h1 { color: var(--navy); margin-bottom: 4px; }
+.print-header h1 { color: var(--inforcer-blue); margin-bottom: 4px; }
 .print-header p { color: var(--text-muted); font-size: 13px; }
 
 @media print {
-  /* Strip away anything that isn't the partner-facing leave-behind */
+  /* When printing, force the Results panel visible regardless of
+     the on-screen tab state, and hide everything else. */
   header,
   footer,
+  .tabstrip,
   .inputs,
   .toolbar,
-  .outputs-header button,
+  .outputs-header .results-actions,
   .psm-notes {
     display: none !important;
   }
 
-  /* Reveal the print-only header instead */
+  #panel-results.hidden { display: block !important; }
+
   .print-only { display: block; }
   .print-header {
     padding: 0 0 12px 0;
-    border-bottom: 2px solid var(--navy);
+    border-bottom: 2px solid var(--inforcer-blue);
     margin-bottom: 16px;
   }
 
-  /* Stretch outputs to fill the page */
   body { background: white; font-size: 11pt; }
-  main {
-    display: block;
-    max-width: 100%;
-    padding: 16px 24px;
-  }
+  main { display: block; max-width: 100%; padding: 16px 24px; }
   .outputs {
     box-shadow: none;
     border: none;
     padding: 0;
   }
 
-  /* Keep KPIs and tables from splitting across pages */
   .kpi-grid,
   .pl-table,
-  .benchmark {
-    page-break-inside: avoid;
-  }
+  .benchmark { page-break-inside: avoid; }
 
-  /* Lighten heavy backgrounds — saves toner, prints cleaner */
   .pl-table thead th {
     background: white;
-    color: var(--navy);
-    border-bottom: 2px solid var(--navy);
+    color: var(--inforcer-blue);
+    border-bottom: 2px solid var(--inforcer-blue);
   }
-  .pl-table .total-row {
-    background: var(--section-bg);
-  }
+  .pl-table .total-row { background: var(--section-bg); }
   .kpi {
     background: var(--section-bg);
     border-color: var(--border);
