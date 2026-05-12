@@ -1,5 +1,5 @@
 // ============================================================
-// inforcer Partner ROI Calculator — live calculations  (v0.3)
+// inforcer Partner ROI Calculator — live calculations  (v0.4)
 // ============================================================
 
 // ---- 1. Helpers: number formatters ----------------------------

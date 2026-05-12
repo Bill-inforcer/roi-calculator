@@ -28,6 +28,7 @@ Buttons:
 
 - **Reset all inputs** — clears every field to a blank slate.
 - **Export inputs (CSV)** — downloads the partner's entered values as a CSV (one row per field).
+- **Field guide ↗** — opens a companion page (`field-guide.html`) that explains, for every input, what it means, where the partner pulls it from, and how to read their value against industry benchmarks.
 - **View results →** — jumps to the Results tab.
 - **← Edit inputs** — jumps back to the Inputs tab.
 - **Copy summary** — copies the headline numbers to the clipboard.
@@ -51,5 +52,5 @@ Vanilla HTML, CSS, and JavaScript. No build step, no dependencies, no tracking.
 
 ---
 
-Pilot v0.3 — inforcer Partner Success. (Tabs, Export CSV, Download PDF, brand banner added.)
+Pilot v0.4 — inforcer Partner Success. (Field guide explainer page added; brand spelling lowercased.)
 Benchmarks: Service Leadership Index 2025; TruMethods; IT Nation Evolve.
