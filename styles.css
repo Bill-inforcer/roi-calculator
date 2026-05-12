@@ -1,16 +1,16 @@
 /* ============================================================
-   Inforcer Partner ROI Calculator — styles  (v0.3)
+   inforcer Partner ROI Calculator — styles  (v0.3)
    ============================================================ */
 
 /* ---- 1. Design tokens (colours, fonts, spacing) ----
-   Two Inforcer brand colours. --inforcer-blue is the deep navy used
+   Two inforcer brand colours. --inforcer-blue is the deep navy used
    for the header (lets the white-and-blue logo pop), and the lighter
    --inforcer-blue-light is the official brand blue lifted directly
    from the logo PNG — used for the tab underline, primary buttons,
    KPI numbers, and accents. Re-skin the whole site from these two. */
 :root {
   --inforcer-blue: #0A1F3D;       /* deep navy — header background */
-  --inforcer-blue-light: #178BDB; /* official Inforcer brand blue (from logo) */
+  --inforcer-blue-light: #178BDB; /* official inforcer brand blue (from logo) */
   --accent: #2E86AB;
   --result-bg: #E8F4F8;
   --input-bg: #FFF8DC;
@@ -78,7 +78,7 @@ header {
   flex-wrap: wrap;
 }
 
-/* The brand block holds the Inforcer logo (white wordmark + blue tick).
+/* The brand block holds the inforcer logo (white wordmark + blue tick).
    The image sits at 48px tall on desktop, 36px on mobile. */
 .brand {
   display: flex;
@@ -311,7 +311,7 @@ main {
   font-weight: 600;
 }
 
-/* Calculated output cells — Current and With-Inforcer columns. The
+/* Calculated output cells — Current and With-inforcer columns. The
    Δ column is left alone so the .positive / .negative semantic
    colours can still apply there. */
 .pl-table tbody td:nth-child(2),
@@ -478,6 +478,15 @@ main {
   color: white;
 }
 
+/* When an <a> tag is used as a button (e.g. the Field guide link),
+   strip the default browser link styling so it matches the buttons
+   next to it. The .btn-secondary rules above still give it the look. */
+.btn-link {
+  text-decoration: none;
+  display: inline-block;
+  line-height: normal;
+}
+
 .outputs-header {
   display: flex;
   justify-content: space-between;
@@ -495,25 +504,112 @@ main {
   flex-wrap: wrap;
 }
 
-/* ---- 9. Print stylesheet ---- */
+/* ---- 9. Field guide page ----
+   The field-guide.html page reuses the same header, footer and design
+   tokens. These rules style only what's specific to the guide. */
+.guide-nav {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 18px 40px 0 40px;
+}
+
+.guide-back {
+  display: inline-block;
+  color: var(--inforcer-blue-light);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 6px 0;
+  border-bottom: 1.5px solid transparent;
+  transition: border-color 0.15s ease;
+}
+
+.guide-back:hover {
+  border-bottom-color: var(--inforcer-blue-light);
+}
+
+.guide-intro {
+  background: var(--result-bg);
+  border: 1.5px solid var(--inforcer-blue-light);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin-bottom: 28px;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.guide-intro p { margin: 0 0 8px 0; }
+.guide-intro p:last-child { margin-bottom: 0; }
+
+.guide-outro { margin-top: 28px; }
+.guide-outro h2 { margin-bottom: 10px; }
+.guide-cta { margin-top: 14px; }
+
+.guide-section { margin-bottom: 28px; }
+
+.guide-section h2 {
+  color: var(--inforcer-blue);
+  font-size: 20px;
+  margin: 0 0 14px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--inforcer-blue-light);
+}
+
+.guide-field {
+  background: white;
+  border: 1.5px solid var(--inforcer-blue-light);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+
+.guide-field h3 {
+  color: var(--inforcer-blue-light);
+  font-size: 17px;
+  margin: 0 0 12px 0;
+}
+
+.guide-field p {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.guide-field .guide-q {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--inforcer-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-top: 12px;
+  margin-bottom: 2px;
+}
+
+.guide-field .guide-q:first-of-type { margin-top: 0; }
+
+/* ---- 10. Print stylesheet ---- */
 .print-only { display: none; }
 .print-header h1 { color: var(--inforcer-blue); margin-bottom: 4px; }
 .print-header p { color: var(--text-muted); font-size: 13px; }
 
 @media print {
-  /* When printing, force the Results panel visible regardless of
-     the on-screen tab state, and hide everything else. */
-  header,
-  footer,
-  .tabstrip,
-  .inputs,
-  .toolbar,
-  .outputs-header .results-actions,
-  .psm-notes {
+  /* When printing the CALCULATOR, force the Results panel visible
+     regardless of tab state, and hide everything else. The :not(.guide)
+     selector means none of this applies on the field-guide page —
+     that page prints in full. */
+  body:not(.guide) header,
+  body:not(.guide) footer,
+  body:not(.guide) .tabstrip,
+  body:not(.guide) .inputs,
+  body:not(.guide) .toolbar,
+  body:not(.guide) .outputs-header .results-actions,
+  body:not(.guide) .psm-notes {
     display: none !important;
   }
 
-  #panel-results.hidden { display: block !important; }
+  body:not(.guide) #panel-results.hidden { display: block !important; }
 
   .print-only { display: block; }
   .print-header {

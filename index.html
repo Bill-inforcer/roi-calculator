@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inforcer Partner ROI Calculator</title>
+  <title>inforcer Partner ROI Calculator</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -11,17 +11,17 @@
   <!-- ============================================ -->
   <!-- HEADER / BRAND BANNER                        -->
   <!-- ============================================ -->
-  <!-- The .brand block holds the Inforcer logo (white wordmark + blue
+  <!-- The .brand block holds the inforcer logo (white wordmark + blue
        tick). To swap for a different version, replace the src below. -->
   <header>
     <div class="header-inner">
       <div class="brand">
-        <img src="inforcer-logo.png" alt="Inforcer" />
+        <img src="inforcer-logo.png" alt="inforcer" />
       </div>
       <div class="brand-text">
         <h1>Partner ROI Calculator</h1>
         <p class="subtitle">
-          Your ongoing ROI in your own numbers — not a vendor average.
+          Your ongoing ROI in your own numbers — not a vendor average
         </p>
       </div>
     </div>
@@ -29,7 +29,7 @@
 
   <!-- Print-only header. Hidden on screen, shows on Cmd/Ctrl+P -->
   <div class="print-only print-header">
-    <h1>Inforcer Partner ROI — Summary</h1>
+    <h1>inforcer Partner ROI — Summary</h1>
     <p>Prepared <span id="print-date"></span> · All figures derived from partner-supplied inputs.</p>
   </div>
 
@@ -80,6 +80,13 @@
         <button id="export-inputs" type="button" class="btn-secondary">
           Export inputs (CSV)
         </button>
+        <a
+          id="open-guide"
+          href="field-guide.html"
+          target="_blank"
+          rel="noopener"
+          class="btn-secondary btn-link"
+        >Field guide ↗</a>
         <button id="go-results" type="button" class="btn-primary">
           View results →
         </button>
@@ -142,12 +149,12 @@
         </div>
       </fieldset>
 
-      <!-- Group 4: Inforcer pricing & uplift -->
+      <!-- Group 4: inforcer pricing & uplift -->
       <fieldset>
-        <legend>4. Inforcer pricing &amp; uplift</legend>
+        <legend>4. inforcer pricing &amp; uplift</legend>
 
         <div class="field">
-          <label for="inforcerCost">Inforcer cost per seat / month ($)</label>
+          <label for="inforcerCost">inforcer cost per seat / month ($)</label>
           <input type="number" id="inforcerCost" value="2" min="0" step="0.01" />
         </div>
 
@@ -233,7 +240,7 @@
           <div class="kpi-value" id="out-margin-current">—</div>
         </div>
         <div class="kpi">
-          <div class="kpi-label">🚀 EBITDA margin — with Inforcer</div>
+          <div class="kpi-label">🚀 EBITDA margin — with inforcer</div>
           <div class="kpi-value" id="out-margin-new">—</div>
         </div>
       </div>
@@ -245,7 +252,7 @@
           <tr>
             <th>Line item</th>
             <th>Current</th>
-            <th>With Inforcer</th>
+            <th>With inforcer</th>
             <th>Δ</th>
           </tr>
         </thead>
@@ -321,7 +328,7 @@
 
   <footer>
     <p>
-      Pilot v0.3 — Inforcer Partner Success.
+      Pilot v0.3 — inforcer Partner Success.
       Benchmarks: Service Leadership Index 2025; TruMethods; IT Nation Evolve.
     </p>
     <p class="signoff">

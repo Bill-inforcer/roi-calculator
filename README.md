@@ -1,4 +1,4 @@
-# Inforcer Partner ROI Calculator
+# inforcer Partner ROI Calculator
 
 An interactive calculator that translates an MSP's operational numbers into annual EBITDA uplift and equity value created — designed to be co-edited live in a QBR.
 
@@ -40,7 +40,7 @@ Brand colours are defined as CSS variables at the top of `styles.css`:
 
 ```css
 --inforcer-blue: #0A1F3D;        /* deep navy — header background */
---inforcer-blue-light: #178BDB;  /* official Inforcer brand blue (from logo) */
+--inforcer-blue-light: #178BDB;  /* official inforcer brand blue (from logo) */
 ```
 
 The header logo lives at `inforcer-logo.png` — the white-and-blue variant designed for dark backgrounds. To swap it out, replace the file or change the `src` attribute in `index.html`.
@@ -51,5 +51,5 @@ Vanilla HTML, CSS, and JavaScript. No build step, no dependencies, no tracking.
 
 ---
 
-Pilot v0.3 — Inforcer Partner Success. (Tabs, Export CSV, Download PDF, brand banner added.)
+Pilot v0.3 — inforcer Partner Success. (Tabs, Export CSV, Download PDF, brand banner added.)
 Benchmarks: Service Leadership Index 2025; TruMethods; IT Nation Evolve.

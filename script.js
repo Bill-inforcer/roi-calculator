@@ -1,5 +1,5 @@
 // ============================================================
-// Inforcer Partner ROI Calculator — live calculations  (v0.3)
+// inforcer Partner ROI Calculator — live calculations  (v0.3)
 // ============================================================
 
 // ---- 1. Helpers: number formatters ----------------------------
@@ -72,7 +72,7 @@ function recalculate() {
   const timeSaving    = hrsSaved * hrRate * 12;
   const retainedRev   = churnRed * revenue;
 
-  // --- 3d. With-Inforcer P&L ---
+  // --- 3d. With-inforcer P&L ---
   const revenueNew    = revenue + newRevenue + retainedRev;
   const cogsNew       = cogsCurrent + inforcerCogs - stackSaving - timeSaving;
   const gpNew         = revenueNew - cogsNew;
@@ -146,11 +146,11 @@ function updateBenchmark(marginCurrent, marginNew) {
   let outcome;
   const lift = marginNew - marginCurrent;
   if (marginNew >= BENCH_BIC && marginCurrent < BENCH_BIC) {
-    outcome = ` With Inforcer, projected margin lifts to ${pct(marginNew)} (+${pp(lift)}) — putting them past best-in-class.`;
+    outcome = ` With inforcer, projected margin lifts to ${pct(marginNew)} (+${pp(lift)}) — putting them past best-in-class.`;
   } else if (marginNew >= BENCH_AVG && marginCurrent < BENCH_AVG) {
-    outcome = ` With Inforcer, projected margin lifts to ${pct(marginNew)} (+${pp(lift)}) — bringing them above the global average.`;
+    outcome = ` With inforcer, projected margin lifts to ${pct(marginNew)} (+${pp(lift)}) — bringing them above the global average.`;
   } else if (lift > 0) {
-    outcome = ` With Inforcer, projected margin lifts to ${pct(marginNew)} (+${pp(lift)}).`;
+    outcome = ` With inforcer, projected margin lifts to ${pct(marginNew)} (+${pp(lift)}).`;
   } else {
     outcome = ` With the current driver assumptions, projected margin holds at ${pct(marginNew)}.`;
   }
@@ -173,7 +173,7 @@ function updateAnchors(v) {
     gapToAvg >= 0
       ? `On your numbers, you sit at ${pct(v.marginCurrent)} — that's ${pp(gapToAvg)} above the global average. Top-quartile territory.`
       : `On your numbers, you sit at ${pct(v.marginCurrent)} — that's ${pp(-gapToAvg)} below the global average. Plenty of margin to recover.`,
-    `Inforcer lifts your projected EBITDA margin to ${pct(v.marginNew)} — a ${pp(lift)} improvement in Year 1.`,
+    `inforcer lifts your projected EBITDA margin to ${pct(v.marginNew)} — a ${pp(lift)} improvement in Year 1.`,
     `At your ${v.multiple.toFixed(1)}x EV/EBITDA multiple, that's ${$(v.equityValue)} in equity value created in Year 1.`,
     `Four levers behind that number — PEPM uplift (${$(v.driver1)}), stack rationalisation (${$(v.driver2)}), engineer time freed (${$(v.driver3)}), churn reduction (${$(v.driver4)}). Push back on any of them.`,
     `Over a typical 3-year hold (flat assumption), cumulative equity value created: ${$(v.equity3yr)}.`,
@@ -197,7 +197,7 @@ async function copySummary() {
   const get = (id) => document.getElementById(id).textContent;
 
   const lines = [
-    'Inforcer Partner ROI — Snapshot',
+    'inforcer Partner ROI — Snapshot',
     '────────────────────────────────',
     `Annual EBITDA uplift:   ${get('out-ebitda-uplift')}`,
     `Equity value (1-yr):    ${get('out-equity-value')}`,
